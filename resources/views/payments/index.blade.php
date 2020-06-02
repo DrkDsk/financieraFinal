@@ -37,14 +37,11 @@
                     <tbody>
                         @foreach ($payments as $payment)
                         <tr>
-                            <td scope="row">{{$payments->id}}</td>
-                            <td>{{__('Name')}}</td>
-                            <td>{{$payments->amount}}</td>
-                            <td>{{$payments->fee}}</td>
-                            <td>{{$payments->payments_number}}</td>
-                            <td>{{$payment->received payments}}</td>
-                            <td>{{$payment->paid balance}}</td>
-                            <td>{{$payment->pendient paid}}</td>
+                            <td scope="row">{{$payment->id}}</td>
+                            <td>{{$payment->number}}</td>
+                            <td>{{$payment->amount}}</td>
+                            <td>{{$payment->payment_date}}</td>
+                            <td>{{$payment->received_amount}}</td>
                             <td>
                                 <a href="" class="btn btn-outline-info btn-sm">
                                     {{__('Edit')}}

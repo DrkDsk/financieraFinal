@@ -15,12 +15,13 @@ class LoansController extends Controller
      */
     public function index()
     {
-        //
-        $loans = Loan::all();
-        $clientes = Client::all();
+        
+        $loans = Loan::orderBy('client_id','ASC')->get();
+        $clients = Client::join('loans','clients.id','=','loans.client_id')->select('clients.name')->get();
+        
         return view ('loans.index',[
             'loans' => $loans,
-            'clients' => $clientes,
+            'clients' => $clients,
         ]);
         
     }
@@ -47,6 +48,16 @@ class LoansController extends Controller
      */
     public function store(Request $request)
     {
+
+        $request->validate([
+            'client_id' => 'required',
+            'amount' => 'required',
+            'payments_number' => 'required',
+            'fee' => 'required',
+            'ministry_date' => 'required',
+            'due_date' => 'required',
+        ]);
+
 
         Loan::create([
                 'client_id' => $request->input('client_id'),

@@ -47,7 +47,6 @@
                                 <a href="" class="btn btn-outline-info btn-sm">
                                     {{__('Edit')}}
                                 </a>  
-
                                 <button class="btn btn-outline-danger btn-sm btn-delete" data-id="{{$loan->id}}">{{__('Delete')}}</button>
                             </td>
                         </tr>
