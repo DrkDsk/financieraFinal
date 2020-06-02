@@ -22,13 +22,12 @@
                     <div class="form-group form-row">
                         
                         <div class="col-md-6">
-                            <label for="name">{{__('Name')}}</label>
-                            <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror">
-                            @error('name')
-                                <div class="invalid-feedback">
-                                    {{$message}}
-                                </div>
-                            @enderror
+                            <label for="inputClient_id">{{__('Name')}}</label>
+                            <select name="client_id" id="client_id"class="form-control">
+                                @foreach($clients as $client)
+                                    <option value="{{$client->id}}">{{$client->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="col-md-6">

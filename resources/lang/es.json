@@ -46,5 +46,7 @@
     "fee": "Cuota",
     "ministry_date": "Fecha de ministro",
     "due_date": "Fecha de Vencimiento",
-    "finished": "Finalizado"
+    "finished": "Finalizado",
+    "New Payment": "Nuevo Pago",
+    "Pay": "Pagar"
 }

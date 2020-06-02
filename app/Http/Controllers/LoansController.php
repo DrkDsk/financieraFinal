@@ -32,7 +32,11 @@ class LoansController extends Controller
      */
     public function create()
     {
-        return view('loans.create');
+
+        $clients = Client::all();
+        return view('loans.create',[
+            "clients" => $clients,
+        ]);
     }
 
     /**
@@ -43,32 +47,16 @@ class LoansController extends Controller
      */
     public function store(Request $request)
     {
-        
-        $request->validate([
-            'name'  => 'required',
-            'amount' => 'required',
-            'payments_number' => 'required',
-            'fee' => 'required',
-            'ministry_date' => 'required|date_format:Y-m-d',
-            'due_date' => 'required|date_format:Y-m-d',
-        ]);
 
-        $client = Client::where('name',$request->input('name'))->exists();
-        
-        if($client){
-            Loan::create([
+        Loan::create([
+                'client_id' => $request->input('client_id'),
                 'amount' => $request->input('amount'),
                 'payments_number' => $request->input('payments_number'),
                 'fee' => $request->input('fee'),
                 'ministry_date' => $request->input('ministry_date'),
                 'due_date' => $request->input('due_date'),
             ]);
-        }
-        else{
-            return "No se encontró el cliente";
-        }
         
-
         return redirect()->route('loans.index');
     }
 
