@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="row">
-    <div class="col-md-8 mx-auto">
+    <div class="col-md-10 mx-auto">
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between">
@@ -23,14 +23,14 @@
                         <tr>
                             <th scope="col">ID</th>
                             <th scope="col">{{__('Name')}}</th>
-                            <th scope="col">{{__('amount')}}</th>
+                            <th scope="col">{{__('amount given')}}</th>
                             <th scope="col">{{__('fee')}}</th>
                             <th scope="col">{{__('payments_number')}}</th>
-                            <th scope="col">{{__('received payments')}}</th>
-                            <th scope="col">{{__('paid balance')}}</th>
-                            <th scope="col">{{__('pendient paid')}}</th>
+                            <th scope="col">{{__('received_payments')}}</th>
+                            <th scope="col">{{__('paid_balance')}}</th>
+                            <th scope="col">{{__('paid_pendient')}}</th>
                             <th scope="col">{{__('finished')}}</th>
-                            <th scope="col" style="width: 100px">{{__('Actions')}}</th>
+                            <th scope="col">{{__('Actions')}}</th>
                         </tr>
                     </thead>
                     

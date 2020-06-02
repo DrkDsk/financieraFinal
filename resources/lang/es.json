@@ -48,5 +48,9 @@
     "due_date": "Fecha de Vencimiento",
     "finished": "Finalizado",
     "New Payment": "Nuevo Pago",
-    "Pay": "Pagar"
+    "received_payments": "Pagos Realizados",
+    "paid_balance": "Saldo Abonado",
+    "paid_pendient": "Saldo Pendiente",
+    "Pay": "Pagar",
+    "amount given": "Monto Ministrado"
 }

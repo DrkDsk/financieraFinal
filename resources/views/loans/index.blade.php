@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="row">
-    <div class="col-md-8 mx-auto">
+    <div class="col-md-10 mx-auto">
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between">
@@ -29,7 +29,7 @@
                             <th scope="col">{{__('ministry_date')}}</th>
                             <th scope="col">{{__('due_date')}}</th>
                             <th scope="col">{{__('finished')}}</th>
-                            <th scope="col" style="width: 100px">{{__('Actions')}}</th>
+                            <th scope="col">{{__('Actions')}}</th>
                         </tr>
                     </thead>
                     
