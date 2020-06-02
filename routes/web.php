@@ -20,3 +20,25 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/clients','ClientsController@index')->name('clients.index');
+
+Route::get('/clients/new','ClientsController@create')->name('clients.create');
+
+Route::post('/clients','ClientsController@store')->name('clients.store');
+
+Route::delete('/clients/{id}','ClientsController@destroy')->name('clients.destroy');
+
+Route::get('/clients/{id}/edit','ClientsController@edit')->name('clients.edit');
+
+Route::patch('/clients/{id}/','ClientsController@update')->name('clients.update');
+
+Route::get('/loans','LoansController@index')->name('loans.index');
+
+Route::get('/loans/new','LoansController@create')->name('loans.create');
+
+Route::post('/loans','LoansController@store')->name('loans.store');
+
+Route::delete('/loans/{id}','LoansController@destroy')->name('loans.destroy');
+
+Route::get('/payments','PaymentsController@index')->name('payments.index');
