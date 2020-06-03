@@ -51,24 +51,33 @@ class LoansController extends Controller
 
         $request->validate([
             'client_id' => 'required',
-            'amount' => 'required',
-            'payments_number' => 'required',
-            'fee' => 'required',
-            'ministry_date' => 'required',
-            'due_date' => 'required',
+            'cantidad' => 'required|numeric',
+            'porcentaje' => 'required|numeric',
+            'número_de_pagos' => 'required|numeric',
+            'cuota' => 'required|numeric',
+            'fecha_de_ministro' => 'required',
+            'fecha_de_vencimiento' => 'required',
         ]);
 
+        $cantidad = intval($request->input('cantidad'));    
+        $porcentaje = (intval($request->input('porcentaje'))/100)*$cantidad;
+        $total = $porcentaje+$cantidad;
 
+        return $total;
+        
+        /*
         Loan::create([
                 'client_id' => $request->input('client_id'),
-                'amount' => $request->input('amount'),
-                'payments_number' => $request->input('payments_number'),
-                'fee' => $request->input('fee'),
-                'ministry_date' => $request->input('ministry_date'),
-                'due_date' => $request->input('due_date'),
+                'amount' => $cantidad,
+                'total_pay' => $total,
+                'payments_number' => intval($request->input('número_de_pagos')),
+                'fee' => intval($request->input('cuota')),
+                'ministry_date' => $request->input('fecha_de_ministro'),
+                'due_date' => $request->input('fecha_de_vencimiento'),
             ]);
         
         return redirect()->route('loans.index');
+        */
     }
 
     /**

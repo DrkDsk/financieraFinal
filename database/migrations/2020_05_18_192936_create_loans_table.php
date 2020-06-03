@@ -21,6 +21,7 @@ class CreateLoansTable extends Migration
                 ->references('id')
                 ->on('clients');
             $table->decimal('amount',8,2);
+            $table->decimal('total_pay',8,2);
             $table->integer('payments_number');
             $table->decimal('fee',8,2);
             $table->date('ministry_date');
