@@ -31,7 +31,7 @@
 
                         <div class="col-md-6">
                             <label for="amount">{{__('amount')}}</label>
-                            <input type="text" name="cantidad" id="cantidad" class="form-control @error('cantidad') is-invalid @enderror">
+                            <input type="text" onchange="cuotaPay('número_de_pagos','cuota')" name="cantidad" id="cantidad" class="form-control @error('cantidad') is-invalid @enderror">
                             @error('cantidad')
                                 <div class="invalid-feedback">
                                     {{$message}}
@@ -41,7 +41,7 @@
 
                         <div class="col-md-6">
                             <label for="porcentaje">{{__('porcent')}}</label>
-                            <input type="text" name="porcentaje" id="porcentaje" class="form-control @error('porcentaje') is-invalid @enderror">
+                            <input type="text" onchange="cuotaPay('número_de_pagos','cuota')" name="porcentaje" id="porcentaje" class="form-control @error('porcentaje') is-invalid @enderror">
                             @error('porcentaje')
                                 <div class="invalid-feedback">
                                     {{$message}}
@@ -81,7 +81,7 @@
 
                         <div class="col-md-6">
                             <label for="due_date">{{__('due_date')}}</label>
-                            <input type="date" name="fecha_de_vencimiento" id="fecha_de_vencimiento" class="form-control @error('fecha_de_vencimiento') is-invalid @enderror">
+                            <input type="date" onchange="toDays('fecha_de_vencimiento','fecha_de_ministro')" name="fecha_de_vencimiento" id="fecha_de_vencimiento" class="form-control @error('fecha_de_vencimiento') is-invalid @enderror">
                             @error('fecha_de_vencimiento')
                                 <div class="invalid-feedback">
                                     {{$message}}
@@ -103,25 +103,26 @@
 <script>
 function cuotaPay(id,id2){
     var cantidad = +document.getElementById('cantidad').value;
+    var porcentaje = ((+document.getElementById('porcentaje').value / 100)*cantidad)+cantidad;
     var dias = +document.getElementById(id).value;
-    document.getElementById(id2).value = cantidad / dias;
+    if(dias !== 0) document.getElementById(id2).value = porcentaje / dias;
 }
 
 function toDate(id,id2){
+    var format = document.getElementById(id).value.split('-');
+    var date = new Date(format[0],format[1]-1,format[2]);
+    var noDays = +document.getElementById('número_de_pagos').value;
+    date.setDate(date.getDate()+noDays);
 
-var format = document.getElementById(id).value.split('-');
-var anio = format[0];
-var mes = format[1];
-var dia = format[2];
-var date = new Date(anio,mes-1,dia);
-var noDays = +document.getElementById('número_de_pagos').value;
-date.setDate(date.getDate()+noDays);
+    anio = date.getFullYear();
+    mes = '0' + (date.getMonth()+1);
+    dia = ("0" + date.getDate()).slice(-2);
+    var fecha = anio + '-' + mes + '-' + dia;
+    document.getElementById(id2).value = fecha;
+}
 
-anio = date.getFullYear();
-mes = '0' + (date.getMonth()+1);
-dia = ("0" + date.getDate()).slice(-2);
-var fecha = anio + '-' + mes + '-' + dia;
-document.getElementById(id2).value = fecha;
+function toDays(id,id2){
+    //
 }
 
 document.addEventListener('DOMContentLoaded', () => {

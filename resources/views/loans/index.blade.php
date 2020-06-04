@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="row">
-    <div class="col-md-10 mx-auto">
+    <div class="col-md-12 mx-auto">
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between">
@@ -34,9 +34,10 @@
                     </thead>
                     
                     <tbody>
-                        @foreach ($loans as $loan)
+                        @foreach($loans as $loan)
                         <tr>
                             <td scope="row">{{$loan->id}}</td>
+                            <td>{{$loan->name}}</td>
                             <td>{{$loan->amount}}</td>
                             <td>{{$loan->payments_number}}</td>
                             <td>{{$loan->fee}}</td>
@@ -52,6 +53,7 @@
                         </tr>
                         @endforeach
                     </tbody>
+                    
                 </table>
             </div>
         </div>

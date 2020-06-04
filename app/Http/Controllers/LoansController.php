@@ -16,14 +16,8 @@ class LoansController extends Controller
     public function index()
     {
         
-        $loans = Loan::orderBy('client_id','ASC')->get();
-        $clients = Client::join('loans','clients.id','=','loans.client_id')->select('clients.name')->get();
-        
-        return view ('loans.index',[
-            'loans' => $loans,
-            'clients' => $clients,
-        ]);
-        
+        $loans = Loan::join('clients','loans.client_id','=','clients.id')->select('loans.*','clients.name')->get();
+        return view ('loans.index',[ 'loans' => $loans,]);
     }
 
     /**
@@ -33,11 +27,8 @@ class LoansController extends Controller
      */
     public function create()
     {
-
         $clients = Client::all();
-        return view('loans.create',[
-            "clients" => $clients,
-        ]);
+        return view('loans.create',[ "clients" => $clients,]);
     }
 
     /**
@@ -51,10 +42,10 @@ class LoansController extends Controller
 
         $request->validate([
             'client_id' => 'required',
-            'cantidad' => 'required|numeric',
-            'porcentaje' => 'required|numeric',
-            'número_de_pagos' => 'required|numeric',
-            'cuota' => 'required|numeric',
+            'cantidad' => 'required|integer',
+            'porcentaje' => 'required|integer',
+            'número_de_pagos' => 'required|integer',
+            'cuota' => 'required|integer',
             'fecha_de_ministro' => 'required',
             'fecha_de_vencimiento' => 'required',
         ]);
@@ -63,12 +54,9 @@ class LoansController extends Controller
         $porcentaje = (intval($request->input('porcentaje'))/100)*$cantidad;
         $total = $porcentaje+$cantidad;
 
-        return $total;
-        
-        /*
         Loan::create([
                 'client_id' => $request->input('client_id'),
-                'amount' => $cantidad,
+                'amount' => intval($request->input('cantidad')),
                 'total_pay' => $total,
                 'payments_number' => intval($request->input('número_de_pagos')),
                 'fee' => intval($request->input('cuota')),
@@ -77,7 +65,6 @@ class LoansController extends Controller
             ]);
         
         return redirect()->route('loans.index');
-        */
     }
 
     /**
