@@ -106,6 +106,7 @@ function cuotaPay(id,id2){
     var porcentaje = ((+document.getElementById('porcentaje').value / 100)*cantidad)+cantidad;
     var dias = +document.getElementById(id).value;
     if(dias !== 0) document.getElementById(id2).value = porcentaje / dias;
+    toDate('fecha_de_ministro','fecha_de_vencimiento');
 }
 
 function toDate(id,id2){
@@ -123,6 +124,14 @@ function toDate(id,id2){
 
 function toDays(id,id2){
     //
+    var format = document.getElementById(id).value.split('-');
+    var date = new Date(format[0],format[1]-1,format[2]);
+    var format2 = document.getElementById(id2).value.split('-');
+    var date2 = new Date(format2[0],format2[1]-1,format2[2]);
+    var dif = date - date2;
+    var dias = Math.floor(dif/(1000*60*60*24));
+    document.getElementById('número_de_pagos').value=dias;
+    cuotaPay('número_de_pagos','cuota');
 }
 
 document.addEventListener('DOMContentLoaded', () => {

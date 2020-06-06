@@ -2,17 +2,12 @@
 
 @section('content')
 <div class="row">
-    <div class="col-md-10 mx-auto">
+    <div class="col-md-12 mx-auto">
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between">
                     <div>
                         <h3 class="mb-0">Pagos</h3>
-                    </div>
-                    <div>
-                        <a href="{{route('payments.create')}}" class="btn btn-primary">
-                            {{__('Pay')}}
-                        </a>
                     </div>
                 </div>
             </div>
@@ -38,16 +33,17 @@
                         @foreach ($payments as $payment)
                         <tr>
                             <td scope="row">{{$payment->id}}</td>
-                            <td>{{$payment->number}}</td>
+                            <td>{{$payment->client->name}}</td>
                             <td>{{$payment->amount}}</td>
-                            <td>{{$payment->payment_date}}</td>
-                            <td>{{$payment->received_amount}}</td>
+                            <td>{{$payment->fee}}</td>
+                            <td>{{$payment->payments_number}}</td>
+                            <!--consulta de pagos realizados al id loan_id con count-->
+                            <!--consulta de suma del monto de los pagos recibidos hechos al id loan_id con count-->
+                            <!--consulta de la resta del monto total menos el total de los pagos recibidos hechos al id loan_id con count-->
                             <td>
-                                <a href="" class="btn btn-outline-info btn-sm">
-                                    {{__('Edit')}}
-                                </a>  
-
-                                <button class="btn btn-outline-danger btn-sm btn-delete" data-id="{{$payment->id}}">{{__('Delete')}}</button>
+                            <a href="{{route('payments.create',$payment->id)}}" class="btn btn-primary">
+                                {{__('Pay')}}
+                            </a>
                             </td>
                         </tr>
                         @endforeach

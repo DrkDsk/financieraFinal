@@ -43,4 +43,12 @@ Route::delete('/loans/{id}','LoansController@destroy')->name('loans.destroy');
 
 Route::get('/payments','PaymentsController@index')->name('payments.index');
 
-Route::get('/payments/new','PaymentsController@create')->name('payments.create');
+
+//payments
+Route::get('/payments/{id}','PaymentsController@create')->name('payments.create');
+
+Route::post('/payments/{id}/','PaymentsController@store')->name('payments.store');
+
+Route::get('/payments/{id}/pay','PaymentsController@edit')->name('payments.pay');
+
+Route::patch('/payments/{id}/','PaymentsController@update')->name('payments.update');

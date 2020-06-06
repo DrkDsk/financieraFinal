@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
-    protected $fillable = ['loan_id','number','amount','payment_date','received_amount'];
+    protected $fillable = ['loan_id','numero_pago','cuota','fecha_pago','monto_recibido'];
+
+    public function loan(){
+        return $this->belongsTo('App\Models\Loan');
+    }
 }

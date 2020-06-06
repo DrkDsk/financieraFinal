@@ -19,10 +19,10 @@ class CreatePaymentsTable extends Migration
             $table->foreign('loan_id')
                 ->references('id')
                 ->on('loans');
-            $table->integer('number');
-            $table->decimal('amount',8,2);
-            $table->date('payment_date');
-            $table->decimal('received_amount',8,2);
+            $table->integer('numero_pago');
+            $table->decimal('cuota',8,2);
+            $table->date('fecha_pago');
+            $table->decimal('monto_recibido',8,2);
             $table->timestamps();
         });
     }
