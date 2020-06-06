@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="row">
-    <div class="col-md-3 mx-auto">
+    <div class="col-md-3">
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between">
@@ -14,7 +14,7 @@
                 <div class="form-group form-row">
                     <div class="col-md-8">
                         <div>
-                            <p>Saldo Abonado: ${{$payment['saldo_abonado']}}</p>
+                            <p>Saldo Abonado: ${{$payment['abonado']}}</p>
                         </div>
 
                         <div>
@@ -22,16 +22,42 @@
                         </div>
 
                         <div>
-                            <p>Cuota: ${{$payment['fee']}}</p>
+                            <p>Cuota: ${{$payment['cuota']}}</p>
                         </div>
                     </div>
                 </div>
             </div>    
         </div>
     </div>
+    
+    <div class="col-md-6 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">No.</th>
+                            <th scope="col">cuota</th>
+                            <th scope="col">Abonado</th>
+                            <th scope="col">Fecha de Pago</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($pagos as $pago)
+                        <tr>
+                            <td scope="row">{{$pago->id}}</td>
+                            <td scope="row">{{$pago->cuota}}</td>
+                            <td scope="row">{{$pago->monto_recibido}}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-    
-    
+
+
     <div class="col-md-3 mx-auto">
         <div class="card">
             <div class="card-header">

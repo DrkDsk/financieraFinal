@@ -6,6 +6,7 @@ use App\Models\Payment;
 use App\Models\Loan;
 use App\Models\Client;
 use Illuminate\Http\Request;
+use DateTime,DateInterval,DatePeriod;
 
 class PaymentsController extends Controller
 {
@@ -32,30 +33,28 @@ class PaymentsController extends Controller
      */
     public function create($id)
     {   
-        //monto recibido
+        
         $abonado = Payment::where('loan_id','=',$id)->select('payments.monto_recibido')->get();
-        //total del prestamo
-        $consultaTotal = Loan::where('id','=',$id)->select('loans.total_pay','loans.fee')->get();
+        $consultaTotal = Loan::where('id','=',$id)->select
+        ('loans.total_pay','loans.fee','loans.payments_number','loans.ministry_date','loans.due_date')->get();
+        
+        $suma = Payment::where('loan_id','=',$id)->sum('monto_recibido');
+        $pagos = Payment::where('loan_id','=',$id)->select('payments.monto_recibido','payments.cuota')->get();
+        
         $total = $consultaTotal[0]->total_pay;
         $cuota = $consultaTotal[0]->fee;
-        
-        $a = 0;
-        foreach($abonado as $abono){
-            $a = $a + intval($abono->monto_recibido);
-        }
-        //crear una estructura de datos donde vaya: id del prestamo,saldo abonado,saldo pendiente, cuota
-        //y devolver a la vista payments.pay
-        $pendiente = $total - $a;
+        $pendiente = $total - $suma;
 
         $payment = array(
             'id' => $id,
-            'saldo_abonado' => $a,
+            'abonado' => $suma,
             'pendiente' => $pendiente,
-            'fee' => $cuota,
-        ); 
+            'cuota' => $cuota,
+        );
 
         return view('payments.pay',[
             'payment' => $payment,
+            'pagos' => $pagos,
         ]);
     }
 
@@ -70,20 +69,29 @@ class PaymentsController extends Controller
         
         $pay = Payment::where('loan_id','=',$id)->select('payments.*')->count();
         $feeQuery = Loan::where('id','=',$id)->select('loans.fee')->get();
-
+        $monto = intval($request->input('pay'));
+        $cuota = intval($feeQuery[0]->fee);
+        
         $request->validate([
             'pay' => 'required|integer',
         ]);
         
-        Payment::create([
-            'loan_id' => $id,
-            'numero_pago' => $pay+1,
-            'cuota' => intval($feeQuery[0]->fee),
-            'fecha_pago' => '2020-05-11',
-            'monto_recibido' => $request->input('pay'),
-        ]);
+        if($monto % $cuota == 0) $veces = $monto / $cuota;
+        else $veces = ($monto / $cuota) + 1;
         
+        for($i=1; $i<=$veces; $i++){
+            if($monto > $cuota) $pago = $cuota;
+            else $pago = $monto;
+            $monto = $monto - $cuota;
 
+            Payment::create([
+                'loan_id' => $id,
+                'numero_pago' => $pay + $i,
+                'cuota' => $cuota,
+                'fecha_pago' => '2020-05-11',
+                'monto_recibido' => $pago,
+            ]);
+        }
         return redirect()->route('payments.index');
     }
 
