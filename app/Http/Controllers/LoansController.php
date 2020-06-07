@@ -87,6 +87,9 @@ class LoansController extends Controller
     public function edit($id)
     {
         //
+        return view('loans.edit',[
+            'loan' => $id
+        ]);
     }
 
     /**
@@ -99,7 +102,30 @@ class LoansController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $request->validate([
+            'cantidad' => 'required|integer',
+            'porcentaje' => 'required|integer',
+            'numero_de_pagos' => 'required|integer',
+            'cuota' => 'required|integer',
+            'fecha_de_ministro' => 'required',
+            'fecha_de_vencimiento' => 'required',
+        ]);
+
+        $cantidad = intval($request->input('cantidad'));    
+        $porcentaje = (intval($request->input('porcentaje'))/100)*$cantidad;
+        $total = $porcentaje+$cantidad;
+
+        $loan = Loan::find($id);
+        $loan->amount = $request->cantidad;
+        $loan->total_pay = $total;
+        $loan->payments_number = $request->numero_de_pagos;
+        $loan->fee = $request->cuota;
+        $loan->ministry_date = $request->fecha_de_ministro;
+        $loan->due_date = $request->fecha_de_vencimiento;
+        $loan->save();
+        return redirect()->route('loans.index');
     }
+
 
     /**
      * Remove the specified resource from storage.

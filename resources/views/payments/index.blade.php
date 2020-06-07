@@ -37,6 +37,10 @@
                             <td>{{$payment->amount}}</td>
                             <td>{{$payment->fee}}</td>
                             <td>{{$payment->payments_number}}</td>
+                            <td>{{$payment->monto_recibido}}</td>
+                            <td>{{$payment->saldo_abonado}}</td>
+                            <td>{{$payment->saldo_pendiente}}</td>
+                            <td>{{$payment->finalizado}}</td>
                             <!--consulta de pagos realizados al id loan_id con count-->
                             <!--consulta de suma del monto de los pagos recibidos hechos al id loan_id con count-->
                             <!--consulta de la resta del monto total menos el total de los pagos recibidos hechos al id loan_id con count-->

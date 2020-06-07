@@ -19,6 +19,7 @@ class PaymentsController extends Controller
     {
         //
         $payments = Loan::orderBy('id')->get();
+        $loanPayment = Payment::orderBy('id')->get();
         
         return view('payments.index',[
             'payments' => $payments,

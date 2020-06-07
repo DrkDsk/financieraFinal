@@ -45,7 +45,7 @@
                             <td>{{$loan->due_date}}</td>
                             <td>{{$loan->finished}}</td>
                             <td>
-                                <a href="" class="btn btn-outline-info btn-sm">
+                                <a href="{{route('loans.edit',$loan->id)}}" class="btn btn-outline-info btn-sm">
                                     {{__('Edit')}}
                                 </a>  
                                 <button class="btn btn-outline-danger btn-sm btn-delete" data-id="{{$loan->id}}">{{__('Delete')}}</button>
