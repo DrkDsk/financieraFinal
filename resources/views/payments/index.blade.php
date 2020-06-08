@@ -24,7 +24,6 @@
                             <th scope="col">{{__('received_payments')}}</th>
                             <th scope="col">{{__('paid_balance')}}</th>
                             <th scope="col">{{__('paid_pendient')}}</th>
-                            <th scope="col">{{__('finished')}}</th>
                             <th scope="col">{{__('Actions')}}</th>
                         </tr>
                     </thead>
@@ -40,7 +39,6 @@
                             <td>{{$payment->monto_recibido}}</td>
                             <td>{{$payment->saldo_abonado}}</td>
                             <td>{{$payment->saldo_pendiente}}</td>
-                            <td>{{$payment->finalizado}}</td>
                             <!--consulta de pagos realizados al id loan_id con count-->
                             <!--consulta de suma del monto de los pagos recibidos hechos al id loan_id con count-->
                             <!--consulta de la resta del monto total menos el total de los pagos recibidos hechos al id loan_id con count-->

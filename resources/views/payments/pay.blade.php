@@ -45,9 +45,10 @@
                     <tbody>
                         @foreach($pagos as $pago)
                         <tr>
-                            <td scope="row">{{$pago->id}}</td>
+                            <td scope="row">{{$pago->numero_pago}}</td>
                             <td scope="row">{{$pago->cuota}}</td>
                             <td scope="row">{{$pago->monto_recibido}}</td>
+                            <td scope="row">{{$pago->fecha_pago}}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -74,7 +75,7 @@
             </div>
 
             <div class="card-body">
-                <form action="{{route('payments.store',$payment)}}" onsubmit="validarCuota('pay')" method="POST">
+                <form action="{{route('payments.store',$payment)}}" method="POST">
                     @csrf
                     <div class="form-group form-row">
                         <div class="col-md-4">
@@ -97,20 +98,3 @@
     </div>
 </div>
 @endsection
-
-<script>
-    function validarCuota(id){
-        var cantidad = document.getElementById(id).value;
-        var cuota = document.getElementById('cuota').value;
-        alert(cuota);
-    }
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('input[type=text]').forEach( node => node.addEventListener('keypress', e => {
-        if(e.keyCode == 13) {
-        e.preventDefault();
-        }
-    }))
-});
-</script>

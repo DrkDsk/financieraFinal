@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Payment;
 use App\Models\Loan;
 use App\Models\Client;
 use Illuminate\Http\Request;
-use DateTime,DateInterval,DatePeriod;
 
 class PaymentsController extends Controller
 {
@@ -19,7 +19,6 @@ class PaymentsController extends Controller
     {
         //
         $payments = Loan::orderBy('id')->get();
-        $loanPayment = Payment::orderBy('id')->get();
         
         return view('payments.index',[
             'payments' => $payments,
@@ -40,12 +39,20 @@ class PaymentsController extends Controller
         ('loans.total_pay','loans.fee','loans.payments_number','loans.ministry_date','loans.due_date')->get();
         
         $suma = Payment::where('loan_id','=',$id)->sum('monto_recibido');
-        $pagos = Payment::where('loan_id','=',$id)->select('payments.monto_recibido','payments.cuota')->get();
+        $pagos = Payment::where('loan_id','=',$id)->select('payments.numero_pago','payments.monto_recibido','payments.cuota','payments.fecha_pago')->get();
         
         $total = $consultaTotal[0]->total_pay;
         $cuota = $consultaTotal[0]->fee;
         $pendiente = $total - $suma;
 
+        $loan = Loan::find($id)->total_pay;
+
+        if($suma == $loan){
+            $loan = Loan::find($id);
+            $loan->finished = 1;
+            $loan->save();
+        }
+        
         $payment = array(
             'id' => $id,
             'abonado' => $suma,
@@ -67,14 +74,22 @@ class PaymentsController extends Controller
      */
     public function store(Request $request, $id)
     {
-        
         $pay = Payment::where('loan_id','=',$id)->select('payments.*')->count();
+        $fecha = Payment::where('loan_id','=',$id)->select('payments.fecha_pago')->get()->last();
+
+        if (!$fecha){
+            $fecha = Loan::where('id','=',$id)->select('loans.ministry_date')->get();
+            $fecha = $fecha[0]->ministry_date;
+        } 
+        else $fecha = $fecha->fecha_pago;
+
         $feeQuery = Loan::where('id','=',$id)->select('loans.fee')->get();
         $monto = intval($request->input('pay'));
         $cuota = intval($feeQuery[0]->fee);
-        
+        $fecha = Carbon::createFromFormat('Y-m-d',$fecha);
+
         $request->validate([
-            'pay' => 'required|integer',
+            'pay' => 'required|integer|numeric|gte:'.(int)$cuota,
         ]);
         
         if($monto % $cuota == 0) $veces = $monto / $cuota;
@@ -89,7 +104,7 @@ class PaymentsController extends Controller
                 'loan_id' => $id,
                 'numero_pago' => $pay + $i,
                 'cuota' => $cuota,
-                'fecha_pago' => '2020-05-11',
+                'fecha_pago' => $fecha->add(1,'day'),
                 'monto_recibido' => $pago,
             ]);
         }
