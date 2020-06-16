@@ -15,7 +15,6 @@ class LoansController extends Controller
      */
     public function index()
     {
-        
         $loans = Loan::join('clients','loans.client_id','=','clients.id')->select('loans.*','clients.name')->get();
         return view ('loans.index',[ 'loans' => $loans,]);
     }
@@ -53,7 +52,7 @@ class LoansController extends Controller
         $cantidad = intval($request->input('cantidad'));    
         $porcentaje = (intval($request->input('porcentaje'))/100)*$cantidad;
         $total = $porcentaje+$cantidad;
-
+        
         Loan::create([
                 'client_id' => $request->input('client_id'),
                 'amount' => intval($request->input('cantidad')),
@@ -86,7 +85,6 @@ class LoansController extends Controller
      */
     public function edit($id)
     {
-        //
         return view('loans.edit',[
             'loan' => $id
         ]);
@@ -101,7 +99,6 @@ class LoansController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         $request->validate([
             'cantidad' => 'required|integer',
             'porcentaje' => 'required|integer',
@@ -135,7 +132,6 @@ class LoansController extends Controller
      */
     public function destroy($id)
     {
-        //
         $loan = Loan::find($id);
         $loan->delete();
         return $loan;

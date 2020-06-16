@@ -17,13 +17,10 @@ class PaymentsController extends Controller
      */
     public function index()
     {
-        //
         $payments = Loan::orderBy('id')->get();
-        
         return view('payments.index',[
             'payments' => $payments,
         ]);
-        
     }
 
     /**
@@ -33,7 +30,6 @@ class PaymentsController extends Controller
      */
     public function create($id)
     {   
-        
         $abonado = Payment::where('loan_id','=',$id)->select('payments.monto_recibido')->get();
         $consultaTotal = Loan::where('id','=',$id)->select
         ('loans.total_pay','loans.fee','loans.payments_number','loans.ministry_date','loans.due_date')->get();
@@ -74,24 +70,24 @@ class PaymentsController extends Controller
      */
     public function store(Request $request, $id)
     {
-        $pay = Payment::where('loan_id','=',$id)->select('payments.*')->count();
-        $fecha = Payment::where('loan_id','=',$id)->select('payments.fecha_pago')->get()->last();
-
-        if (!$fecha){
-            $fecha = Loan::where('id','=',$id)->select('loans.ministry_date')->get();
-            $fecha = $fecha[0]->ministry_date;
-        } 
-        else $fecha = $fecha->fecha_pago;
-
-        $feeQuery = Loan::where('id','=',$id)->select('loans.fee')->get();
-        $monto = intval($request->input('pay'));
-        $cuota = intval($feeQuery[0]->fee);
-        $fecha = Carbon::createFromFormat('Y-m-d',$fecha);
+        $cuota = Loan::find($id)->fee;
+        $total = Loan::find($id)->total_pay;
+        $montoPendiente = Payment::where('loan_id','=',$id)->sum('monto_recibido');
+        $total = $total - $montoPendiente;
 
         $request->validate([
-            'pay' => 'required|integer|numeric|gte:'.(int)$cuota,
+            'pay' => "required|integer|numeric|between:$cuota,$total",
         ]);
+
         
+        $ultimoPago = Payment::where('loan_id','=',$id)->select('payments.*')->count();
+        $fechaPago = Payment::where('loan_id','=',$id)->select('payments.fecha_pago')->get()->last();
+
+        if (!$fechaPago) $fechaPago = Loan::find($id)->ministry_date;
+
+        $fechaPago = Carbon::createFromFormat('Y-m-d',$fechaPago);
+
+        $monto = intval($request->input('pay'));
         if($monto % $cuota == 0) $veces = $monto / $cuota;
         else $veces = ($monto / $cuota) + 1;
         
@@ -102,9 +98,9 @@ class PaymentsController extends Controller
 
             Payment::create([
                 'loan_id' => $id,
-                'numero_pago' => $pay + $i,
+                'numero_pago' => $ultimoPago + $i,
                 'cuota' => $cuota,
-                'fecha_pago' => $fecha->add(1,'day'),
+                'fecha_pago' => $fechaPago->add(1,'day'),
                 'monto_recibido' => $pago,
             ]);
         }
@@ -131,7 +127,6 @@ class PaymentsController extends Controller
      */
     public function edit($id)
     {
-        //
         return view('payments.pay',[
             'payment' => $id
         ]);
@@ -146,7 +141,6 @@ class PaymentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         $request -> validate([
             'amount' => 'required',
         ]);
@@ -165,6 +159,6 @@ class PaymentsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
     }
 }
