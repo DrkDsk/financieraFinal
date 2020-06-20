@@ -45,9 +45,9 @@
                             <td>{{$loan->due_date}}</td>
                             <td>
                             @if($loan->finished)
-                                <button type="button" class="btn btn-success">Finalizado</button>
+                                <a href="{{route('payments.create',$loan->id)}}" class="btn btn-success">Finalizado</a>
                             @else
-                                <button type="button" class="btn btn-danger">Restando</button>
+                                <a href="{{route('payments.create',$loan->id)}}" type="button" class="btn btn-danger">Abonar</button>
                             @endif
                             </td>
                             

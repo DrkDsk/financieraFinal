@@ -29,10 +29,11 @@
             </div>    
         </div>
     </div>
-    
-    <div class="col-md-6 mx-auto">
+
+    <div class="col-md-6 mx-center">
         <div class="card">
             <div class="card-header">
+            <h3 class="mb-4">Detalles</h3>
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -57,8 +58,7 @@
         </div>
     </div>
 
-
-
+    @if($payment['pendiente'])
     <div class="col-md-3 mx-auto">
         <div class="card">
             <div class="card-header">
@@ -72,6 +72,7 @@
                         </a>
                     </div>
                 </div>
+                
             </div>
 
             <div class="card-body">
@@ -96,5 +97,6 @@
             </div>
         </div>
     </div>
+    @endif
 </div>
 @endsection
