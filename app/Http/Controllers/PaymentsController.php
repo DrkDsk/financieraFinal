@@ -57,44 +57,72 @@ class PaymentsController extends Controller
     {
         $cuota = Loan::find($id)->fee;
         $total = Loan::find($id)->total_pay;
-        $montoPendiente = Payment::where('loan_id','=',$id)->sum('monto_recibido');
-        $total = $total - $montoPendiente;
+        $recibido = Payment::where('loan_id','=',$id)->sum('monto_recibido');
+        $pendiente = $total - $recibido;
 
-        $request->validate([
-            'pay' => "required|integer|numeric|between:$cuota,$total",
-        ]);
-        
-        $fechaPago = Payment::where('loan_id','=',$id)->select('payments.fecha_pago')->get()->first();
-        
-        $fechaPago = $fechaPago->fecha_pago;
-        $fechaPago = Carbon::createFromDate($fechaPago);
-
-        $monto = intval($request->input('pay'));
-        if($monto % $cuota == 0) $veces = $monto / $cuota;
-        else $veces = ($monto / $cuota) + 1;
-        
-        $datos = Payment::where('loan_id','=',$id)->get();
-        
-        for($i=1; $i<=$veces; $i++){
-            if($monto > $cuota) $pago = $cuota;
-            else $pago = $monto;
-            $monto = $monto - $cuota;
-            
-            $payment = new Payment();
-            $payment->loan_id = $datos[$i-1]->loan_id;
-            $payment->numero_pago = $i;
-            $payment->cuota = $datos[$i-1]->cuota;
-            $payment->fecha_pago = $datos[$i-1]->fecha_pago;
-            $payment->monto_recibido = $pago;
-            $payment->save();
+        if($cuota > $pendiente){
+            $request->validate([
+                'pay' => "required|integer|numeric|max:$pendiente",
+            ]);
         }
-        return redirect()->route('payments.index');
+        else{
+            $request->validate([
+                'pay' => "required|integer|numeric|between:$cuota,$pendiente",
+            ]);
+        }
+        
+        $pagos = Payment::all()->where('loan_id','=',$id);
+        $ultimoAbono = Payment::where('loan_id','=',$id)->select('monto_recibido')->get()->last();
+        $ultimoAbono = $ultimoAbono->monto_recibido;
+        
+        $ultimoPago = Payment::where('loan_id','=',$id)->select('numero_pago')->get()->last();
+        
+        
+        $ultimoPago = $ultimoPago->numero_pago;
+        $monto = intval($request->input('pay'));
+        
+        foreach($pagos as $pago){
+
+            if($monto > $pago->cuota && $pago->numero_pago != $ultimoPago){
+                if($pago->monto_recibido == 0){
+                    $pago->monto_recibido = $pago->cuota;
+                    $pago->save();
+                    $monto = $monto - $cuota;
+                }
+                //representa el abono del ultimo pago
+                elseif($monto > $pago->cuota && $pago->numero_pago == $ultimoPago){
+                    $pago->monto_recibido = $monto;
+                    $pago->save();
+                break;
+                }
+            }
+            elseif($monto == $cuota){
+                if($pago->monto_recibido == 0){
+                    $pago->monto_recibido = $monto;
+                    $pago->save();
+                    //representa un solo pago
+                    break;   
+                }
+            } 
+            else{
+                if($pago->monto_recibido == 0){
+                    $pago->monto_recibido = $monto;
+                    $pago->save();
+                    $monto = 0;
+                }
+                elseif($pago->numero_pago == $ultimoPago && $pago->monto_recibido !=0){
+                    $abono = $ultimoAbono + intval($request->input('pay'));
+                    $pago->monto_recibido = $abono;
+                    $pago->save();
+                }
+            } 
+        }
+        return redirect()->route('payments.create',$id);
     }
 
     public function show($id)
     {
         //
-
     }
 
     public function edit($id)

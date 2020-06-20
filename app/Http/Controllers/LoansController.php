@@ -39,26 +39,26 @@ class LoansController extends Controller
         $cantidad = intval($request->input('cantidad'));    
         $porcentaje = (intval($request->input('porcentaje'))/100)*$cantidad;
         $total = $porcentaje+$cantidad;
-        
-        Loan::create([
-                'client_id' => $request->input('client_id'),
-                'amount' => intval($request->input('cantidad')),
-                'total_pay' => $total,
-                'payments_number' => intval($request->input('número_de_pagos')),
-                'fee' => intval($request->input('cuota')),
-                'ministry_date' => $request->input('fecha_de_ministro'),
-                'due_date' => $request->input('fecha_de_vencimiento'),
-            ]);
-        
+
+        $prestamo = new Loan();
+        $prestamo->client_id = $request->input('client_id');
+        $prestamo->amount = intval($request->input('cantidad'));
+        $prestamo->total_pay = $total;
+        $prestamo->payments_number = intval($request->input('número_de_pagos'));
+        $prestamo->fee = intval($request->input('cuota'));
+        $prestamo->ministry_date = $request->input('fecha_de_ministro');
+        $prestamo->due_date = $request->input('fecha_de_vencimiento');
+        $prestamo->save();
+
         $noPagos = intval($request->input('número_de_pagos'));
         $pago = 0;
         $fechaPago = Carbon::createFromDate($request->input('fecha_de_ministro'));
         
-        while($pago < $noPagos){
+        while($pago < $prestamo->payments_number){
             $fechaPago -> addDay();
             if($fechaPago->isWeekDay()){
                 $payment = new Payment();
-                $payment->loan_id = $request->input('client_id');
+                $payment->loan_id = $prestamo->id;
                 $payment->numero_pago = $pago+1;
                 $payment->cuota = intval($request->input('cuota'));
                 $payment->fecha_pago = $fechaPago;
