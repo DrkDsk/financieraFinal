@@ -43,7 +43,14 @@
                             <td>{{$loan->fee}}</td>
                             <td>{{$loan->ministry_date}}</td>
                             <td>{{$loan->due_date}}</td>
-                            <td>{{$loan->finished}}</td>
+                            <td>
+                            @if($loan->finished)
+                                <button type="button" class="btn btn-success">Finalizado</button>
+                            @else
+                                <button type="button" class="btn btn-danger">Restando</button>
+                            @endif
+                            </td>
+                            
                             <td>
                                 <a href="{{route('loans.edit',$loan->id)}}" class="btn btn-outline-info btn-sm">
                                     {{__('Edit')}}

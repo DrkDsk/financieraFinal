@@ -19,7 +19,7 @@ class CreateLoansTable extends Migration
             $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')
                 ->references('id')
-                ->on('clients');
+                ->on('clients')->onDelete('cascade');
             $table->decimal('amount',8,2);
             $table->decimal('total_pay',8,2);
             $table->integer('payments_number');

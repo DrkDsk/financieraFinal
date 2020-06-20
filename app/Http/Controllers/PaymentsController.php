@@ -10,11 +10,7 @@ use Illuminate\Http\Request;
 
 class PaymentsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         $payments = Loan::orderBy('id')->get();
@@ -23,11 +19,6 @@ class PaymentsController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create($id)
     {   
         $abonado = Payment::where('loan_id','=',$id)->select('payments.monto_recibido')->get();
@@ -62,12 +53,6 @@ class PaymentsController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request, $id)
     {
         $cuota = Loan::find($id)->fee;
@@ -78,53 +63,40 @@ class PaymentsController extends Controller
         $request->validate([
             'pay' => "required|integer|numeric|between:$cuota,$total",
         ]);
-
         
-        $ultimoPago = Payment::where('loan_id','=',$id)->select('payments.*')->count();
-        $fechaPago = Payment::where('loan_id','=',$id)->select('payments.fecha_pago')->get()->last();
-
-        if (!$fechaPago) $fechaPago = Loan::find($id)->ministry_date;
-
-        $fechaPago = Carbon::createFromFormat('Y-m-d',$fechaPago);
+        $fechaPago = Payment::where('loan_id','=',$id)->select('payments.fecha_pago')->get()->first();
+        
+        $fechaPago = $fechaPago->fecha_pago;
+        $fechaPago = Carbon::createFromDate($fechaPago);
 
         $monto = intval($request->input('pay'));
         if($monto % $cuota == 0) $veces = $monto / $cuota;
         else $veces = ($monto / $cuota) + 1;
         
+        $datos = Payment::where('loan_id','=',$id)->get();
+        
         for($i=1; $i<=$veces; $i++){
             if($monto > $cuota) $pago = $cuota;
             else $pago = $monto;
             $monto = $monto - $cuota;
-
-            Payment::create([
-                'loan_id' => $id,
-                'numero_pago' => $ultimoPago + $i,
-                'cuota' => $cuota,
-                'fecha_pago' => $fechaPago->add(1,'day'),
-                'monto_recibido' => $pago,
-            ]);
+            
+            $payment = new Payment();
+            $payment->loan_id = $datos[$i-1]->loan_id;
+            $payment->numero_pago = $i;
+            $payment->cuota = $datos[$i-1]->cuota;
+            $payment->fecha_pago = $datos[$i-1]->fecha_pago;
+            $payment->monto_recibido = $pago;
+            $payment->save();
         }
         return redirect()->route('payments.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         return view('payments.pay',[
@@ -132,13 +104,6 @@ class PaymentsController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $request -> validate([
@@ -151,12 +116,6 @@ class PaymentsController extends Controller
         return redirect()->route('payments.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         

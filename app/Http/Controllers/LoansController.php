@@ -2,40 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Client;
 use App\Models\Loan;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 
 class LoansController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         $loans = Loan::join('clients','loans.client_id','=','clients.id')->select('loans.*','clients.name')->get();
         return view ('loans.index',[ 'loans' => $loans,]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $clients = Client::all();
         return view('loans.create',[ "clients" => $clients,]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
 
@@ -63,26 +50,32 @@ class LoansController extends Controller
                 'due_date' => $request->input('fecha_de_vencimiento'),
             ]);
         
+        $noPagos = intval($request->input('número_de_pagos'));
+        $pago = 0;
+        $fechaPago = Carbon::createFromDate($request->input('fecha_de_ministro'));
+        
+        while($pago < $noPagos){
+            $fechaPago -> addDay();
+            if($fechaPago->isWeekDay()){
+                $payment = new Payment();
+                $payment->loan_id = $request->input('client_id');
+                $payment->numero_pago = $pago+1;
+                $payment->cuota = intval($request->input('cuota'));
+                $payment->fecha_pago = $fechaPago;
+                $payment->monto_recibido = 0;
+                $payment->save();
+                $pago++;
+            }
+        }
+        
         return redirect()->route('loans.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+        
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         return view('loans.edit',[
@@ -90,13 +83,6 @@ class LoansController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -123,13 +109,6 @@ class LoansController extends Controller
         return redirect()->route('loans.index');
     }
 
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $loan = Loan::find($id);

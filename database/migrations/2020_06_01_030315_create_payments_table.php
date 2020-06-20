@@ -18,7 +18,7 @@ class CreatePaymentsTable extends Migration
             $table->unsignedBigInteger('loan_id');
             $table->foreign('loan_id')
                 ->references('id')
-                ->on('loans');
+                ->on('loans')->onDelete('cascade');
             $table->integer('numero_pago');
             $table->decimal('cuota',8,2);
             $table->date('fecha_pago');
