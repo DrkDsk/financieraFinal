@@ -21,6 +21,7 @@ class CreatePaymentsTable extends Migration
                 ->on('loans')->onDelete('cascade');
             $table->integer('numero_pago');
             $table->decimal('cuota',8,2);
+            $table->boolean('paid')->default(0);
             $table->date('fecha_pago');
             $table->decimal('monto_recibido',8,2);
             $table->timestamps();
