@@ -56,3 +56,7 @@ Route::post('/payments/{id}/','PaymentsController@store')->name('payments.store'
 Route::get('/payments/{id}/pay','PaymentsController@edit')->name('payments.pay');
 
 Route::patch('/payments/{id}/','PaymentsController@update')->name('payments.update');
+
+Route::post('import','ClientsController@importExcel')->name('import');
+
+Route::get('export','PaymentsController@exportExcel')->name('exportExcel');

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PagosExports;
 use Carbon\Carbon;
 use App\Models\Payment;
 use App\Models\Loan;
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PaymentsController extends Controller
 {
@@ -22,23 +24,14 @@ class PaymentsController extends Controller
     public function create($id)
     {   
         $abonado = Payment::where('loan_id','=',$id)->select('payments.monto_recibido')->get();
-        $consultaTotal = Loan::where('id','=',$id)->select
-        ('loans.total_pay','loans.fee','loans.payments_number','loans.ministry_date','loans.due_date')->get();
+        $consultaTotal = Loan::find($id);
         
         $suma = Payment::where('loan_id','=',$id)->sum('monto_recibido');
-        $pagos = Payment::where('loan_id','=',$id)->select('payments.numero_pago','payments.monto_recibido','payments.cuota','payments.fecha_pago')->get();
+        $pagos = Payment::where('loan_id','=',$id)->select('payments.*')->get();
         
-        $total = $consultaTotal[0]->total_pay;
-        $cuota = $consultaTotal[0]->fee;
+        $total = $consultaTotal->total_pay;
+        $cuota = $consultaTotal->fee;
         $pendiente = $total - $suma;
-
-        $loan = Loan::find($id)->total_pay;
-
-        if($suma == $loan){
-            $loan = Loan::find($id);
-            $loan->finished = 1;
-            $loan->save();
-        }
         
         $payment = array(
             'id' => $id,
@@ -76,32 +69,35 @@ class PaymentsController extends Controller
         $ultimoAbono = $ultimoAbono->monto_recibido;
         
         $ultimoPago = Payment::where('loan_id','=',$id)->select('numero_pago')->get()->last();
-        
-        
         $ultimoPago = $ultimoPago->numero_pago;
         $monto = intval($request->input('pay'));
         
         foreach($pagos as $pago){
-
+            //representa cuando el monto de entrada es mayor a la cuota y aún no es el ultimo pago
             if($monto > $pago->cuota && $pago->numero_pago != $ultimoPago){
                 if($pago->monto_recibido == 0){
                     $pago->monto_recibido = $pago->cuota;
+                    $pago->paid = 1;
                     $pago->save();
                     $monto = $monto - $cuota;
                 }
                 //representa el abono del ultimo pago
                 elseif($monto > $pago->cuota && $pago->numero_pago == $ultimoPago){
                     $pago->monto_recibido = $monto;
+                    $pago->paid = 1;
                     $pago->save();
                 break;
                 }
             }
+            //representa un solo pago, cuando la cantidad de entrada y la cuota es la misma
             elseif($monto == $cuota){
+                //representa el espacio disponible para abonar, si hay un cero
+                //significa que hay un espacio libre para abonar
                 if($pago->monto_recibido == 0){
                     $pago->monto_recibido = $monto;
+                    $pago->paid = 1;
                     $pago->save();
-                    //representa un solo pago
-                    break;   
+                break;   
                 }
             } 
             else{
@@ -117,6 +113,16 @@ class PaymentsController extends Controller
                 }
             } 
         }
+
+        $suma = Payment::where('loan_id','=',$id)->sum('monto_recibido');
+        $loan = Loan::find($id)->total_pay;
+        //En caso de que el prestamo haya sido compleatado, se le asigna un 1 al campo finished
+        if($suma == $loan){
+            $loan = Loan::find($id);
+            $loan->finished = 1;
+            $loan->save();
+        }
+
         return redirect()->route('payments.create',$id);
     }
 
@@ -144,8 +150,8 @@ class PaymentsController extends Controller
         return redirect()->route('payments.index');
     }
 
-    public function destroy($id)
+    public function exportExcel()
     {
-        
+        return Excel::download(new PagosExports, 'resumen-pagos.xlsx');
     }
 }

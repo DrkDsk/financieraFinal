@@ -3,6 +3,18 @@
 @section('content')
 <div class="row">
     <div class="col-md-8 mx-auto">
+
+        <div class="card-body">
+            <form action="{{route('import')}}" method="post" enctype="multipart/form-data">
+                @csrf
+                @if(Session::has('message'))
+                <p>{{Session::get('message')}}</p>
+                @endif
+                <input type="file" name="file" id="file">
+                <button class="btn btn-success">Importar</button>
+            </form>
+        </div>
+    
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between">
