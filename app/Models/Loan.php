@@ -11,7 +11,7 @@ class Loan extends Model
     public function client(){
         return $this->belongsTo('App\Models\Client');
     }
-
+    
     public function getSaldoAbonadoAttribute()
     {
         return $this->pagos()->sum('monto_recibido');

@@ -48,6 +48,7 @@ class PaymentsController extends Controller
 
     public function store(Request $request, $id)
     {
+        
         $cuota = Loan::find($id)->fee;
         $total = Loan::find($id)->total_pay;
         $recibido = Payment::where('loan_id','=',$id)->sum('monto_recibido');
