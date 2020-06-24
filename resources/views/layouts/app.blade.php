@@ -33,15 +33,19 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{{ route('clients.index')}}">{{__('Clients')}} <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{{ route('loans.index')}}">{{__('Loans')}} <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{{ route('payments.index')}}">{{__('Payments')}} <span class="sr-only">(current)</span></a>
-                    </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ route('home')}}">{{__('DashBoard')}} <span class="sr-only">(current)</span></a>
+                        </li>
+
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ route('clients.index')}}">{{__('Clients')}} <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ route('loans.index')}}">{{__('Loans')}} <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ route('payments.index')}}">{{__('Payments')}} <span class="sr-only">(current)</span></a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

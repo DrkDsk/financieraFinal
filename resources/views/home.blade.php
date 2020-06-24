@@ -13,8 +13,10 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    You are logged in!
+                    
+                    <div>
+                        <h2>Clientes Totales: {{$numeroClientes}}</h2>
+                    </div>
                 </div>
             </div>
         </div>
