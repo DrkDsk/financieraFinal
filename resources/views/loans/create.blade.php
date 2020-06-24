@@ -103,7 +103,9 @@
 <script>
 function cuotaPay(id,id2){
     var cantidad = +document.getElementById('cantidad').value;
-    var porcentaje = ((+document.getElementById('porcentaje').value / 100)*cantidad)+cantidad;
+    if(cantidad){
+        var porcentaje = ((+document.getElementById('porcentaje').value / 100)*cantidad)+cantidad;
+    } 
     var dias = +document.getElementById(id).value;
     if(dias !== 0) document.getElementById(id2).value = porcentaje / dias;
     toDate('fecha_de_ministro','fecha_de_vencimiento');
@@ -112,26 +114,41 @@ function cuotaPay(id,id2){
 function toDate(id,id2){
     var format = document.getElementById(id).value.split('-');
     var date = new Date(format[0],format[1]-1,format[2]);
-    var noDays = +document.getElementById('número_de_pagos').value;
-    date.setDate(date.getDate()+noDays);
+    var dias = +document.getElementById('número_de_pagos').value;
 
+    i=0
+    date.setDate(date.getDate()+1)
+    if(dias){
+        while(i !== dias){
+            if(date.getDay() == 0 || date.getDay() == 6) date.setDate(date.getDate()+1)
+            else{
+                date.setDate(date.getDate()+1)
+                i++
+            }
+        }
+    }
+    
+    date.setDate(date.getDate()-1)
     anio = date.getFullYear();
-    mes = '0' + (date.getMonth()+1);
-    dia = ("0" + date.getDate()).slice(-2);
+    mes  = '0' + (date.getMonth()+1);
+    dia  = ("0" + date.getDate()).slice(-2);
     var fecha = anio + '-' + mes + '-' + dia;
     document.getElementById(id2).value = fecha;
 }
 
 function toDays(id,id2){
-    //
     var format = document.getElementById(id).value.split('-');
-    var date = new Date(format[0],format[1]-1,format[2]);
     var format2 = document.getElementById(id2).value.split('-');
-    var date2 = new Date(format2[0],format2[1]-1,format2[2]);
-    var dif = date - date2;
-    var dias = Math.floor(dif/(1000*60*60*24));
-    document.getElementById('número_de_pagos').value=dias;
-    cuotaPay('número_de_pagos','cuota');
+    if(format2.length !== 1){
+        var date  = new Date(format[0],format[1]-1,format[2]);
+        var date2 = new Date(format2[0],format2[1]-1,format2[2]);
+        var dif   = date - date2;
+        var dias  = Math.floor(dif/(1000*60*60*24));
+        if(dias){
+            document.getElementById('número_de_pagos').value=dias;
+            cuotaPay('número_de_pagos','cuota');
+        }
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
