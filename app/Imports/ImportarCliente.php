@@ -9,11 +9,6 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class ImportarCliente implements ToModel
 {
-    /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
     public function model(array $row)
     {
         return new Client([
