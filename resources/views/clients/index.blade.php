@@ -10,8 +10,15 @@
                 @if(Session::has('message'))
                 <p>{{Session::get('message')}}</p>
                 @endif
-                <input type="file" name="file" id="file">
+                <input type="file" name="file" id="file" class="form-control @error('file') is-invalid @enderror">
+                @error('file')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                @enderror
+                <div>
                 <button class="btn btn-success">Importar</button>
+                </div>
             </form>
         </div>
     

@@ -58,6 +58,9 @@ class ClientsController extends Controller
 
     public function importExcel(Request $request)
     {
+        $request->validate([
+            'file' => 'required'
+        ]);
         
         $file = $request->file('file');
         Excel::import(new ImportarCliente, $file);
