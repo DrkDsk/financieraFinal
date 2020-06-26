@@ -17,7 +17,7 @@
                     </div>
                 @enderror
                 <div>
-                <button class="btn btn-success">Importar</button>
+                <button class="btn btn-success">Importar Clientes</button>
                 </div>
             </form>
         </div>
