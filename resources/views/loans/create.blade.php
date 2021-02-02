@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.nav')
 
 @section('content')
 <div class="row">
@@ -20,7 +20,7 @@
                 <form action="{{route('loans.store')}}" method="POST">
                     @csrf
                     <div class="form-group form-row">
-                        <div class="col-md-6">
+                        <div class="form-group col-md-6">
                             <label for="inputClient_id">{{__('Name')}}</label>
                             <select name="client_id" id="client_id"class="form-control">
                                 @foreach($clients as $client)
@@ -29,7 +29,7 @@
                             </select>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="form-group col-md-6">
                             <label for="amount">{{__('amount')}}</label>
                             <input type="text" onchange="cuotaPay('número_de_pagos','cuota')" name="cantidad" id="cantidad" class="form-control @error('cantidad') is-invalid @enderror">
                             @error('cantidad')
@@ -39,7 +39,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="form-group col-md-6">
                             <label for="porcentaje">{{__('porcent')}}</label>
                             <input type="text" onchange="cuotaPay('número_de_pagos','cuota')" name="porcentaje" id="porcentaje" class="form-control @error('porcentaje') is-invalid @enderror">
                             @error('porcentaje')
@@ -49,7 +49,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="form-group col-md-6">
                             <label for="payments_number">{{__('payments_number')}}</label>
                             <input type="text" onchange="cuotaPay('número_de_pagos','cuota')" name="número_de_pagos" id="número_de_pagos" class="form-control @error('número_de_pagos') is-invalid @enderror">
                             @error('número_de_pagos')
@@ -59,7 +59,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="form-group col-md-6">
                             <label for="fee">{{__('fee')}}</label>
                             <input type="text" onchange="cuotaPay('cuota','número_de_pagos')" name="cuota" id="cuota" class="form-control @error('cuota') is-invalid @enderror">
                             @error('cuota')
@@ -69,7 +69,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="form-group col-md-6">
                             <label for="ministry_date">{{__('ministry_date')}}</label>
                             <input type="date" onchange="toDate('fecha_de_ministro','fecha_de_vencimiento')" name="fecha_de_ministro" id="fecha_de_ministro" class="form-control @error('fecha_de_ministro') is-invalid @enderror">
                             @error('fecha_de_ministro')
@@ -90,8 +90,9 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-success btn-lg">{{__('Create')}}</button>
-                    
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-success btn-lg">{{__('Create')}}</button>
+                    </div>
                 </form>
             </div>
         </div>
