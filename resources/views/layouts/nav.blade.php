@@ -12,27 +12,31 @@
 </head>
 <body>
     <div id="nav">
-        <nav class="navbar navbar-dark navbar-expand-lg bg-dark flex-md-nowrap shadow">
-        
-        <a style="margin-left:2em;" class="navbar-brand" href="{{url('/home')}}">Inicio</a>
-        
-        <div class="collapse navbar-collapse" id="navbarToggleExternalContent">
-            <div>
+        <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
+            <a class="navbar-brand" href="{{url('/home')}}">Inicio</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{url('clients')}}">Clientes <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{url('loans')}}">Préstamos</a>
-                </li>
-                <li class="nav-item active">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{url('clients')}}">Clientes <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="{{url('loans')}}">Préstamos <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
                     <a class="nav-link" href="{{url('payments')}}">Pagos</a>
-                </li>
+                    </li>
                 </ul>
+                <form action="{{url('logout')}}" method="POST">
+                @csrf
+                    <button type="submit" class="btn btn-danger">
+                        <span class="material-icons">logout</span>
+                    </button>
+                </form>
             </div>
-            
-        </div>
-        
         </nav>
         <main class="py-4">
             @yield('content')
