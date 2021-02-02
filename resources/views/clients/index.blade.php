@@ -82,8 +82,8 @@
         <div class="row">
             <div class="col-md-10 mx-auto">
                 <div class="card">
-                    <div class="card-header bg-success">
-                        <p class="h3">Tabla Clientes</p>
+                    <div class="card-header bg-dark">
+                        <p class="h3 text-light">Tabla Clientes</p>
                     </div>
 
                     <div class="card-body">
