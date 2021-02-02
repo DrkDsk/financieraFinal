@@ -14,7 +14,7 @@
     <div id="nav">
         <nav class="navbar navbar-dark navbar-expand-lg bg-dark flex-md-nowrap shadow">
         
-        <a style="margin-left:2em;" class="navbar-brand" href="{{url('/home')}}">Home</a>
+        <a style="margin-left:2em;" class="navbar-brand" href="{{url('/home')}}">Inicio</a>
         
         <div class="collapse navbar-collapse" id="navbarToggleExternalContent">
             <div>
