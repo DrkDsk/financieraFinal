@@ -25,7 +25,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
-                                    <button class="btn btn-info">Importar Archivo</button>
+                                    <button class="btn btn-primary text-light">Importar Archivo</button>
                                 </div>
                             </div>
                         </form>
