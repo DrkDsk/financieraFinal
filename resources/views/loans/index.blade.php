@@ -9,11 +9,11 @@
                     <div class="card-header bg-dark">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h3 class="text-light mb-0">Prestamos</h3>
+                                <h3 class="text-light mb-0">Préstamos</h3>
                             </div>
                             <div>
                                 <a href="{{route('loans.create')}}" class="btn btn-primary">
-                                    {{__('New Loan')}}
+                                    Nuevo Préstamo
                                 </a>
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                                 
                                 <tbody>
                                     @foreach($loans as $loan)
-                                    <tr>
+                                    <tr class="text-center">
                                         <td scope="row">{{$loan->id}}</td>
                                         <td>{{$loan->name}}</td>
                                         <td>{{$loan->amount}}</td>
@@ -55,10 +55,10 @@
                                         </td>
                                         
                                         <td>
-                                            <a href="{{route('loans.edit',$loan->id)}}" class="btn btn-outline-info btn-sm">
+                                            <a href="{{route('loans.edit',$loan->id)}}" class="btn btn-info">
                                                 {{__('Edit')}}
                                             </a>  
-                                            <button class="btn btn-outline-danger btn-sm btn-delete" data-id="{{$loan->id}}">{{__('Delete')}}</button>
+                                            <button class="btn btn-danger btn-delete" data-id="{{$loan->id}}">{{__('Delete')}}</button>
                                         </td>
                                     </tr>
                                     @endforeach

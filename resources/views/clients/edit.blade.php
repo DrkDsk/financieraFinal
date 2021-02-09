@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-md-6 mx-auto">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header bg-dark text-white">
                         <div class="d-flex justify-content-between">
                             <div>
                                 <h3 class="mb-0">{{__('Edit Client')}}</h3>

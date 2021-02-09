@@ -4,10 +4,10 @@
 <div class="row">
     <div class="col-md-6 mx-auto">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header bg-dark text-white">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <h3 class="mb-0">{{__('New Loan')}}</h3>
+                        <h3 class="mb-0">Nuevo Préstamo</h3>
                     </div>
                     <div>
                         <a href="{{route('loans.index')}}" class="btn btn-danger">
@@ -31,7 +31,7 @@
 
                         <div class="form-group col-md-6">
                             <label for="amount">{{__('amount')}}</label>
-                            <input type="text" onchange="cuotaPay('número_de_pagos','cuota')" name="cantidad" id="cantidad" class="form-control @error('cantidad') is-invalid @enderror">
+                            <input type="number" onchange="cuotaPay('número_de_pagos','cuota')" name="cantidad" id="cantidad" class="form-control @error('cantidad') is-invalid @enderror">
                             @error('cantidad')
                                 <div class="invalid-feedback">
                                     {{$message}}
@@ -41,7 +41,7 @@
 
                         <div class="form-group col-md-6">
                             <label for="porcentaje">{{__('porcent')}}</label>
-                            <input type="text" onchange="cuotaPay('número_de_pagos','cuota')" name="porcentaje" id="porcentaje" class="form-control @error('porcentaje') is-invalid @enderror">
+                            <input type="number" onchange="cuotaPay('número_de_pagos','cuota')" name="porcentaje" id="porcentaje" class="form-control @error('porcentaje') is-invalid @enderror">
                             @error('porcentaje')
                                 <div class="invalid-feedback">
                                     {{$message}}
@@ -51,7 +51,7 @@
 
                         <div class="form-group col-md-6">
                             <label for="payments_number">{{__('payments_number')}}</label>
-                            <input type="text" onchange="cuotaPay('número_de_pagos','cuota')" name="número_de_pagos" id="número_de_pagos" class="form-control @error('número_de_pagos') is-invalid @enderror">
+                            <input type="number" onchange="cuotaPay('número_de_pagos','cuota')" name="número_de_pagos" id="número_de_pagos" class="form-control @error('número_de_pagos') is-invalid @enderror">
                             @error('número_de_pagos')
                                 <div class="invalid-feedback">
                                     {{$message}}

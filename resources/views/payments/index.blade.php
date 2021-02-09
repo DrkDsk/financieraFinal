@@ -22,7 +22,7 @@
                         <div class="table-responsive">
                             <table class="table table-striped table-dark"> 
                                 <thead>
-                                    <tr>
+                                    <tr class="text-center">
                                         <th scope="col">ID</th>
                                         <th scope="col">{{__('Name')}}</th>
                                         <th scope="col">{{__('amount given')}}</th>
@@ -37,7 +37,7 @@
                                 
                                 <tbody>
                                     @foreach ($payments as $payment)
-                                    <tr>
+                                    <tr class="text-center">
                                         <td scope="row">{{$payment->id}}</td>
                                         <td>{{$payment->client->name}}</td>
                                         <td>{{$payment->amount}}</td>
