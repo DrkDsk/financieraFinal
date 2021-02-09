@@ -78,8 +78,13 @@ class LoansController extends Controller
 
     public function edit($id)
     {
+        $datosPrestamo = Loan::where('id',$id)->first();
+        $cantidad = $datosPrestamo->amount;
+        $numeroPagos = $datosPrestamo->payments_number;
         return view('loans.edit',[
-            'loan' => $id
+            'loan' => $id,
+            'cantidad' => $cantidad,
+            'noPagos' => $numeroPagos
         ]);
     }
 
