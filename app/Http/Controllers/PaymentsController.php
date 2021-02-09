@@ -15,7 +15,7 @@ class PaymentsController extends Controller
     
     public function index()
     {
-        $payments = Loan::orderBy('id')->get();
+        $payments = Loan::orderBy('id')->paginate(10);
         return view('payments.index',[
             'payments' => $payments,
         ]);
@@ -23,11 +23,9 @@ class PaymentsController extends Controller
 
     public function create($id)
     {   
-        $abonado = Payment::where('loan_id','=',$id)->select('payments.monto_recibido')->get();
         $consultaTotal = Loan::find($id);
-        
         $suma = Payment::where('loan_id','=',$id)->sum('monto_recibido');
-        $pagos = Payment::where('loan_id','=',$id)->select('payments.*')->get();
+        $pagos = Payment::where('loan_id','=',$id)->select('payments.*')->paginate(10);
         
         $total = $consultaTotal->total_pay;
         $cuota = $consultaTotal->fee;
