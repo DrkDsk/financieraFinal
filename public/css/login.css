@@ -4,9 +4,9 @@ body {
   min-height: 100vh; }
 
 .brand-wrapper {
-  margin-bottom: 19px; }
+  margin-bottom: 0px; }
   .brand-wrapper .logo {
-    height: 85px; }
+    height: 80px; }
 
 .login-card {
   border: 0;
