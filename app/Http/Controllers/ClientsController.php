@@ -9,7 +9,6 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ClientsController extends Controller
 {
-    
     public function index()
     {
         $clients = Client::all();
@@ -25,7 +24,6 @@ class ClientsController extends Controller
 
     public function store(Request $request)
     {
-
         $request->validate([
             'name' => 'required',
             'phone' => 'required',
@@ -39,7 +37,6 @@ class ClientsController extends Controller
         ]);
 
         return redirect()->route('clients.index');
-
     }
 
     public function show($id)
