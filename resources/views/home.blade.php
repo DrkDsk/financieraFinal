@@ -26,7 +26,7 @@
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
-                            <p class="h1">{{$numeroClientes}}</p>
+                            <p class="h1">{{$numeroPrestamos}}</p>
                             <span class="material-icons" style="font-size: 50px">
                                 price_change
                             </span>
@@ -42,7 +42,7 @@
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
-                            <p class="h1">{{$numeroClientes}}</p>
+                            <p class="h1">{{$numeroPagos}}</p>
                             <span class="material-icons" style="font-size: 50px">
                                 paid
                             </span>
