@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 
 class LoansController extends Controller
 {
-    
     public function index()
     {
         $loans = Loan::join('clients','loans.client_id','=','clients.id')->select('loans.*','clients.name')->get();
@@ -67,7 +66,6 @@ class LoansController extends Controller
                 $pago++;
             }
         }
-        
         return redirect()->route('loans.index');
     }
 
