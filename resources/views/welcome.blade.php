@@ -19,17 +19,16 @@
     
     <body class="text-center">
         <div class="container-fluid d-flex h-100 p-3 mx-auto flex-column">
-            
             <header class="masthead mb-auto">
                 <div class="inner">
-                <h3 class="masthead-brand">Financiera</h3>
-                <nav class="nav nav-masthead justify-content-center">
-                    <a class="nav-link active" href="{{url('home')}}">Home</a>
-                    @if(auth()->guest())
-                        <a class="nav-link" href="{{route('login')}}">Iniciar sesión</a>
-                        <a class="nav-link" href="{{route('register')}}">Registrarse</a>
-                    @endif
-                </nav>
+                    <h3 class="masthead-brand">Financiera</h3>
+                    <nav class="nav nav-masthead justify-content-center">
+                        <a class="nav-link active" href="{{url('home')}}">Home</a>
+                        @if(auth()->guest())
+                            <a class="nav-link" href="{{route('login')}}">Iniciar sesión</a>
+                            <a class="nav-link" href="{{route('register')}}">Registrarse</a>
+                        @endif
+                    </nav>
                 </div>
             </header>
 
